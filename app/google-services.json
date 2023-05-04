@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1007869248736",
+    "project_id": "wanderpath-568cb",
+    "storage_bucket": "wanderpath-568cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007869248736:android:db5d3f2c42098a9a28bc85",
+        "android_client_info": {
+          "package_name": "com.example.wanderpath"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007869248736-3a5ghg7uu6k8vofib1qvf9sff4t5sio7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVBXGJfdTIa0NcV8Q7elEWP2DUxGicDZs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007869248736-3a5ghg7uu6k8vofib1qvf9sff4t5sio7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
