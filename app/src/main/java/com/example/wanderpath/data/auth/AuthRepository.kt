@@ -75,7 +75,7 @@ class AuthRepository(val dataSource: LoginDataSource) {
 //        }
     }
 
-    suspend fun signUp(user: User, avatarBitmap: Bitmap): Result<FirebaseUser> {
+    suspend fun signUp(user: User): Result<FirebaseUser> {
         return try {
             val result =
                 auth.createUserWithEmailAndPassword(user.email.trim(), user.password).await()
@@ -123,6 +123,14 @@ class AuthRepository(val dataSource: LoginDataSource) {
         this.user = firebaseUser
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
+    }
+
+    fun deleteUser(){
+        auth.currentUser!!.delete().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "deleteUser: user was deleted")
+            }
+        }
     }
 
     companion object {

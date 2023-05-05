@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:tooltipText="Password must be at least 6 characters long"
-    tools:context=".ui.register.RegisterFragment">
+    tools:context=".ui.authentication.RegisterFragment">
 
     <TextView
         android:id="@+id/textView3"
