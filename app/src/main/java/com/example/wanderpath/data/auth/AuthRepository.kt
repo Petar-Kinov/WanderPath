@@ -23,6 +23,7 @@ class AuthRepository(val dataSource: LoginDataSource) {
     val isLoggedIn: Boolean
         get() = user != null
 
+
     init {
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
@@ -136,4 +137,6 @@ class AuthRepository(val dataSource: LoginDataSource) {
     companion object {
         val auth = FirebaseAuth.getInstance()
     }
+
+
 }

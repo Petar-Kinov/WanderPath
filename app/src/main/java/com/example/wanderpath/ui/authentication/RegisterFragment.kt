@@ -1,8 +1,10 @@
 package com.example.wanderpath.ui.authentication
 
+import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +12,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.wanderpath.R
 import com.example.wanderpath.data.model.User
 import com.example.wanderpath.databinding.FragmentRegisterBinding
@@ -29,8 +33,7 @@ class RegisterFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val authViewModel: AuthViewModel by lazy {
-        ViewModelProvider(requireActivity(), LoginViewModelFactory())
-            .get(AuthViewModel::class.java)
+        ViewModelProvider(requireActivity(), LoginViewModelFactory()).get(AuthViewModel::class.java)
     }
 
     private lateinit var usernameET: EditText
@@ -73,10 +76,20 @@ class RegisterFragment : Fragment() {
                     registrationTokens = mutableListOf()
                 )
 
-                view
+                authViewModel.signup(user)
 
             }
         }
+
+        authViewModel.signUpIsResult.observe(requireActivity(), Observer {
+            val result = it ?: return@Observer
+
+
+            findNavController().navigate(R.id.mainActivity)
+//            requireActivity().setResult(Activity.RESULT_OK)
+//            requireActivity().finish()
+        })
+
         return binding.root
     }
 

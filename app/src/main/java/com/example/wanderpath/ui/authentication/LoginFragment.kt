@@ -17,15 +17,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.wanderpath.R
 import com.example.wanderpath.databinding.FragmentLoginBinding
+import com.example.wanderpath.domain.auth.AuthViewModel
 import com.example.wanderpath.ui.login.LoggedInUserView
-import com.example.wanderpath.ui.login.LoginViewModel
 import com.example.wanderpath.ui.login.LoginViewModelFactory
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private lateinit var loginViewModel: LoginViewModel
+
+    private val authViewModel: AuthViewModel by lazy {
+        ViewModelProvider(requireActivity(), LoginViewModelFactory())[AuthViewModel::class.java]
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,10 +46,7 @@ class LoginFragment : Fragment() {
         val login = binding.login
         val loading = binding.loading
 
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
-
-        loginViewModel.loginFormState.observe(requireActivity(), Observer {
+        authViewModel.loginFormState.observe(requireActivity(), Observer {
             val loginState = it ?: return@Observer
 
             // disable login button unless both username / password is valid
@@ -60,7 +60,7 @@ class LoginFragment : Fragment() {
             }
         })
 
-        loginViewModel.loginResult.observe(requireActivity(), Observer {
+        authViewModel.loginResult.observe(requireActivity(), Observer {
             val loginResult = it ?: return@Observer
 
             loading.visibility = View.GONE
@@ -69,11 +69,12 @@ class LoginFragment : Fragment() {
             }
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
+                requireActivity().finish()
             }
             requireActivity().setResult(Activity.RESULT_OK)
 
             //Complete and destroy login activity once successful
-            requireActivity().finish()
+
         })
 
         binding.registerBtn.setOnClickListener{
@@ -81,7 +82,7 @@ class LoginFragment : Fragment() {
         }
 
         username.afterTextChanged {
-            loginViewModel.loginDataChanged(
+            authViewModel.loginDataChanged(
                 username.text.toString(),
                 password.text.toString()
             )
@@ -89,7 +90,7 @@ class LoginFragment : Fragment() {
 
         password.apply {
             afterTextChanged {
-                loginViewModel.loginDataChanged(
+                authViewModel.loginDataChanged(
                     username.text.toString(),
                     password.text.toString()
                 )
@@ -98,7 +99,7 @@ class LoginFragment : Fragment() {
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
-                        loginViewModel.login(
+                        authViewModel.login(
                             username.text.toString(),
                             password.text.toString()
                         )
@@ -108,7 +109,7 @@ class LoginFragment : Fragment() {
 
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
+                authViewModel.login(username.text.toString(), password.text.toString())
             }
         }
 
@@ -124,6 +125,8 @@ class LoginFragment : Fragment() {
             "$welcome $displayName",
             Toast.LENGTH_LONG
         ).show()
+
+        findNavController().navigate(R.id.mainActivity)
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {

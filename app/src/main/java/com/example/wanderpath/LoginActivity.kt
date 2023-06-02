@@ -1,4 +1,4 @@
-package com.example.wanderpath.ui.login
+package com.example.wanderpath
 
 import android.app.Activity
 import androidx.lifecycle.Observer
